@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Survey</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    <!-- Go to Home Page Button -->
+    <a style="padding: 5px; margin: 10px 0px 0px 10px;" href="index.html" class="btn btn-info">Go to Home Page</a>
+
+    <!-- Survey Form Section -->
+    <div style="border: solid 1px black; margin: 20px;" class="container mt-5">
+        <h2 class="text-center">Student Survey Form</h2>
+
+        <form style="padding: 10px; margin:10px;">
+
+            <!-- First Name, Last Name, Email, Date -->
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="firstName" class="required">First Name*</label>
+                    <input type="text" class="form-control" id="firstName" placeholder="Enter your first name" autofocus="on" required>
+                    <!-- <div class="invalid-feedback">Please provide your first name.</div> -->
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="lastName" class="required">Last Name*</label>
+                    <input type="text" class="form-control" id="lastName" placeholder="Enter your last name" required>
+                    <!-- <div class="invalid-feedback">Please provide your last name.</div> -->
+                </div>
+            </div>
+
+            <!-- Address Fields -->
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="address" class="required">Street Address*</label>
+                    <input type="text" class="form-control" id="address" placeholder="Enter your street address" required>
+                    <!-- <div class="invalid-feedback">Please provide your street address.</div> -->
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="city" class="required">City*</label>
+                    <input type="text" class="form-control" id="city" placeholder="Enter your city" required>
+                    <!-- <div class="invalid-feedback">Please provide your city.</div> -->
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="state" class="required">State*</label>
+                    <input type="text" class="form-control" id="state" placeholder="Enter your state" required>
+                    <!-- <div class="invalid-feedback">Please provide your state.</div> -->
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="zip" class="required">Zip Code*</label>
+                    <input type="text" class="form-control" id="zip" placeholder="Enter your zip code" required pattern="\d{5}">
+                    <!-- <div class="invalid-feedback">Please enter a valid 5-digit zip code.</div> -->
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="phone" class="required">Telephone Number*</label>
+                    <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required pattern="\d{10}">
+                    <!-- <div class="invalid-feedback">Please enter a valid 10-digit phone number.</div> -->
+                </div>
+            </div>
+
+            <!-- Email and Date of Survey -->
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="email" class="required">Email*</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                    <!-- <div class="invalid-feedback">Please provide a valid email.</div> -->
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="surveyDate" class="required">Date of Survey*</label>
+                    <input type="date" class="form-control" id="surveyDate" required>
+                    <!-- <div class="invalid-feedback">Please provide the date of the survey.</div> -->
+                </div>
+            </div>
+
+            <!-- Checkboxes: What they liked most about the campus -->
+            <h4 class="mt-4">What did you like most about the campus?</h4>
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="students" value="students">
+                    <label class="form-check-label" for="students">Students</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="location" value="location">
+                    <label class="form-check-label" for="location">Location</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="campus" value="campus">
+                    <label class="form-check-label" for="campus">Campus</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="atmosphere" value="atmosphere">
+                    <label class="form-check-label" for="atmosphere">Atmosphere</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="dorms" value="dorms">
+                    <label class="form-check-label" for="dorms">Dorm Rooms</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="sports" value="sports">
+                    <label class="form-check-label" for="sports">Sports</label>
+                </div>
+            </div>
+
+            <!-- Radio Buttons: How did you become interested in the university? -->
+            <h4 class="mt-4">How did you become interested in the university?</h4>
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="interest" id="friends" value="friends">
+                    <label class="form-check-label" for="friends">Friends</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="interest" id="television" value="television">
+                    <label class="form-check-label" for="television">Television</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="interest" id="internet" value="internet">
+                    <label class="form-check-label" for="internet">Internet</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="interest" id="other" value="other">
+                    <label class="form-check-label" for="other">Other</label>
+                </div>
+                <!-- <div class="invalid-feedback d-block">Please select one option.</div> -->
+            </div>
+
+            <!-- Dropdown: Likelihood to Recommend -->
+            <h4 class="mt-4">How likely are you to recommend this school?</h4>
+            <div class="form-group">
+                <select class="form-control" id="recommendation" required>
+                    <option disabled selected value="">Select an option</option>
+                    <option value="Very Likely">Very Likely</option>
+                    <option value="Likely">Likely</option>
+                    <option value="Unlikely">Unlikely</option>
+                </select>
+                <div class="invalid-feedback">Please select an option.</div>
+            </div>
+
+            <!-- Raffle: Comma Separated Numbers -->
+            <div class="form-group">
+                <label for="raffle" class="required">Raffle (Enter 10 comma-separated numbers between 1 and 100)</label>
+                <input type="text" class="form-control" id="raffle" placeholder="Enter 10 numbers" required pattern="^(\d{1,2}(,\d{1,2}){9})$">
+                <div class="invalid-feedback">Please enter exactly 10 comma-separated numbers between 1 and 100.</div>
+            </div>
+
+            <!-- Additional Comments -->
+            <div class="form-group">
+                <label for="comments">Additional Comments</label>
+                <textarea class="form-control" id="comments" rows="3" placeholder="Enter any additional comments"></textarea>
+            </div>
+
+            <!-- Submit and Cancel Buttons -->
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-secondary">Cancel</button>
+
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
