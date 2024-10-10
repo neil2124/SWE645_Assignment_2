@@ -17,9 +17,9 @@ This project demonstrates a complete CI/CD pipeline for a web application using 
 Navigate to the root directory of your project where the `Dockerfile` is located and run the following command to build the image:
 ```bash
 docker build -t neil2124/class-website:latest .
+```
 
 Check if docker is running properly
-
 
 Run the Docker Image Locally
 To test the application locally, run the built image using:
