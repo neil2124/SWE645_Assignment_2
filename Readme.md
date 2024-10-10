@@ -165,19 +165,83 @@ kubectl get deployments
 kubectl get nodes
 ```
 
-4. Jenkins Setup
+3. Jenkins Setup for CI/CD Pipeline
+Step 1: Install Jenkins on Windows
+Download Jenkins:
+
+Go to the official Jenkins website and download the Windows installer for Jenkins.
+Run the installer and follow the on-screen instructions to complete the installation.
+Unlock Jenkins:
+
+After installation, open a web browser and navigate to http://localhost:9090 (or whatever port Jenkins is running on).
+Jenkins will ask for an admin password. This password is stored in the following file:
+```bash
+C:\Program Files\Jenkins\secrets\initialAdminPassword
+```
+
+Open the file, copy the password, and paste it into the browser to unlock Jenkins.
+Install Suggested Plugins:
+
+After unlocking, Jenkins will prompt you to install plugins. Choose Install Suggested Plugins to install the most commonly used ones. Jenkins will automatically install them.
+Create Admin User:
+
+Once the plugins are installed, you’ll be prompted to create your first admin user. Fill out the required fields (username, password, full name, and email) and click Save.
+Jenkins Is Ready:
+
+After creating the admin user, Jenkins is ready for use. You should now see the Jenkins dashboard.
+Step 2: Install Required Plugins
+On the Jenkins dashboard, go to Manage Jenkins > Manage Plugins.
+
+Under the Available tab, search for the following plugins and install them:
+
+Pipeline: For running pipelines.
+Git: To integrate with GitHub repositories.
+Docker Pipeline: For building and pushing Docker images.
+Kubernetes (optional for more Kubernetes-specific integrations).
+After installing the required plugins, restart Jenkins.
+
+Ensure that docker is running on the system as jenkins will need it to build and push the images 
+
+Step 3: Configure GitHub and DockerHub Credentials in Jenkins
+GitHub Credentials:
+
+Go to Manage Jenkins > Manage Credentials.
+In the global credentials section, click Add Credentials.
+Select Username with password and enter your GitHub username and personal access token (you can generate one from GitHub under Settings > Developer Settings > Personal Access Tokens).
+DockerHub Credentials:
+
+Similarly, add another set of credentials for DockerHub.
+Enter your DockerHub username and password.
+Save the Credentials.
+
+Step 4: Create a Jenkins Pipeline
+Create a New Pipeline:
+
+From the Jenkins dashboard, click New Item.
+Name the item (for example, class-website-pipeline), select Pipeline, and click OK.
+Configure the Pipeline:
+
+Under the Pipeline section, select Pipeline script from SCM.
+For SCM, select Git, and paste your GitHub repository URL (e.g., https://github.com/yourusername/your-repo.git).
+For Credentials, select the GitHub credentials you configured earlier.
+Jenkinsfile Setup:
+
+Create a Jenkinsfile in the root directory of your GitHub repository. This file will define your CI/CD pipeline, including steps for building and deploying your application. It will also have the AWS configuration details in order to connect to our EKS Cluster.
+
+Save and Run the Pipeline:
+
+Save your Jenkins pipeline configuration and run it. Jenkins will pull the repository, build the Docker image, push it to DockerHub, and deploy it to your Kubernetes cluster.
 
 
-Install Jenkins
-Install Jenkins on your Windows machine by downloading it from the official Jenkins website.
-Access Jenkins at http://localhost:9090.
-Configure Jenkins Pipeline
-Go to your Jenkins dashboard.
-Create a new pipeline project.
-Add your GitHub repository and DockerHub credentials in Jenkins.
+View the Deployment
+Once the pipeline is successful, you can check the deployment status using:
+```bash
+kubectl get deployments
+kubectl get pods
+kubectl get svc
+```
 
 
-Create a Jenkins File. My file can be found in the root of this repo.
 
 
 
