@@ -4,6 +4,7 @@ pipeline {
         DOCKERHUB_USER = 'neil2124'
         DOCKERHUB_PASS = 'Dark_Angel@2124' // Alternatively, use Jenkins credentials.
         DOCKER_IMAGE = 'neil2124/class-website'
+        KUBECONFIG_PATH = "C:/Users/<your-username>/.kube/config" // Path to your kubeconfig file
     }
     stages {
         stage("Clone Repository") {
