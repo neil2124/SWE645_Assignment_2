@@ -45,6 +45,9 @@ pipeline {
                              "AWS_SHARED_CREDENTIALS_FILE=${AWS_SHARED_CREDENTIALS_FILE}"]){
                         bat "kubectl set image deployment/my-app-deployment my-app=neil2124/class-website:latest --record"
                     }
+
+                     // Restart the pods to reflect the new changes
+                    bat "kubectl rollout restart deployment my-app-deployment"
                 }
             }
         }
