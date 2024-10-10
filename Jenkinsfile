@@ -1,69 +1,49 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('dockerhub-credentials') // Jenkins credentials for DockerHub
+        DOCKERHUB_PASS = credentials('dockerhub-credentials') // Use your DockerHub credentials stored in Jenkins
+        DOCKERHUB_USER = 'neil2124' // DockerHub username
         DOCKER_IMAGE = 'neil2124/class-website:latest'
-        GITHUB_CREDENTIALS = credentials('github_credentials') // Jenkins GitHub credentials
     }
     stages {
-        stage('Clone Repository') {
-            steps {
-                git credentialsId: 'github_credentials', url: 'https://github.com/neil2124/SWE645_Assignment_2.git'
-                echo 'Repository cloned successfully'
-            }
-        }
-        stage('Build Docker Image') {
+        stage("Building the Student Survey Image") {
             steps {
                 script {
-                    // Build Docker image from root directory
-                    echo "Building Docker image: ${DOCKER_IMAGE}"
-                    docker.build("${DOCKER_IMAGE}")
-                }
-            }
-        }
-        // stage('Push Docker Image') {
-        //     steps {
-        //         script {
-        //             echo "Pushing Docker image: ${DOCKER_IMAGE} to DockerHub"
-        //             docker.withRegistry('https://index.docker.io/v1/', credentials('dockerhub-credentials')) {
-        //                 docker.image("${DOCKER_IMAGE}").push()
-        //             }
-        //         }
-        //     }
-        // }
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    echo "Pushing Docker image: ${DOCKER_IMAGE} to DockerHub"
+                    checkout scm // Checks out the repository from SCM
+                    sh 'rm -rf *.war'
+                    sh 'jar -cvf StudentSurvey.war -C WebContent/ .'
+                    sh 'echo ${BUILD_TIMESTAMP}'
                     
-                    // Manually login to Docker Hub
-                    sh '''
-                        echo "Dark_Angel@2124" | docker login -u "neil2124" --password-stdin
-                    '''
-                    
-                    // Push the image
-                    sh "docker push ${DOCKER_IMAGE}"
+                    // Logging into DockerHub
+                    sh "docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASS}"
+
+                    // Building the Docker image with a unique tag using the build timestamp
+                    def customImage = docker.build("${DOCKER_IMAGE}:${BUILD_TIMESTAMP}")
                 }
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        stage("Pushing Image to DockerHub") {
             steps {
                 script {
-                    echo "Deploying Docker image: ${DOCKER_IMAGE} to Kubernetes"
-                    sh '''
-                        kubectl set image deployment/my-app-deployment my-app=${DOCKER_IMAGE} --record
-                    '''
+                    // Pushing the built Docker image to DockerHub
+                    sh "docker push ${DOCKER_IMAGE}:${BUILD_TIMESTAMP}"
                 }
             }
         }
-    }
-    post {
-        success {
-            echo 'Deployment successful!'
+
+        stage("Deploying to Kubernetes as single pod") {
+            steps {
+                // Deploy the new image to the Kubernetes deployment using kubectl
+                sh "kubectl set image my-app-deployment my-app=${DOCKER_IMAGE}:${BUILD_TIMESTAMP} -n jenkins-pipeline"
+            }
         }
-        failure {
-            echo 'Deployment failed.'
+
+        stage("Deploying to Kubernetes with load balancer") {
+            steps {
+                // Deploy the new image to the Kubernetes load-balanced deployment using kubectl
+                sh "kubectl set image my-app-deployment my-app=${DOCKER_IMAGE}:${BUILD_TIMESTAMP} -n jenkins-pipeline"
+            }
         }
     }
 }
