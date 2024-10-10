@@ -1,48 +1,46 @@
 pipeline {
     agent any
     environment {
-        DOCKERHUB_PASS = credentials('dockerhub-credentials') // Use your DockerHub credentials stored in Jenkins
-        DOCKERHUB_USER = 'neil2124' // DockerHub username
-        DOCKER_IMAGE = 'neil2124/class-website:latest'
+        DOCKERHUB_USER = 'neil2124'
+        DOCKERHUB_PASS = 'Dark_Angel@2124' // Alternatively, use Jenkins credentials.
+        DOCKER_IMAGE = 'neil2124/class-website'
     }
     stages {
-        stage("Building the Student Survey Image") {
+        stage("Clone Repository") {
+            steps {
+                git url: 'https://github.com/neil2124/SWE645_Assignment_2.git'
+            }
+        }
+
+        stage("Building Docker Image") {
             steps {
                 script {
-                    checkout scm // Checks out the repository from SCM
-                    sh 'rm -rf *.war'
-                    sh 'jar -cvf StudentSurvey.war -C WebContent/ .'
-                    sh 'echo ${BUILD_TIMESTAMP}'
-                    
                     // Logging into DockerHub
                     sh "docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASS}"
 
-                    // Building the Docker image with a unique tag using the build timestamp
-                    def customImage = docker.build("${DOCKER_IMAGE}:${BUILD_TIMESTAMP}")
+                    // Building Docker image from Dockerfile in the repository
+                    echo "Building Docker image: ${DOCKER_IMAGE}"
+                    docker.build("${DOCKER_IMAGE}:${BUILD_TIMESTAMP}")
                 }
             }
         }
 
-        stage("Pushing Image to DockerHub") {
+        stage("Pushing Docker Image to DockerHub") {
             steps {
                 script {
-                    // Pushing the built Docker image to DockerHub
+                    // Pushing the Docker image to DockerHub
+                    echo "Pushing Docker image: ${DOCKER_IMAGE} to DockerHub"
                     sh "docker push ${DOCKER_IMAGE}:${BUILD_TIMESTAMP}"
                 }
             }
         }
 
-        stage("Deploying to Kubernetes as single pod") {
+        stage("Deploying to Kubernetes") {
             steps {
-                // Deploy the new image to the Kubernetes deployment using kubectl
-                sh "kubectl set image my-app-deployment my-app=${DOCKER_IMAGE}:${BUILD_TIMESTAMP} -n jenkins-pipeline"
-            }
-        }
-
-        stage("Deploying to Kubernetes with load balancer") {
-            steps {
-                // Deploy the new image to the Kubernetes load-balanced deployment using kubectl
-                sh "kubectl set image my-app-deployment my-app=${DOCKER_IMAGE}:${BUILD_TIMESTAMP} -n jenkins-pipeline"
+                script {
+                    // Kubernetes deployment (requires kubectl to be set up on Jenkins)
+                    sh "kubectl set image deployment/my-app-deployment my-app=${DOCKER_IMAGE}:${BUILD_TIMESTAMP} --record"
+                }
             }
         }
     }
