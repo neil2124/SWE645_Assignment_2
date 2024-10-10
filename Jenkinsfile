@@ -16,11 +16,11 @@ pipeline {
             steps {
                 script {
                     // Logging into DockerHub
-                    bat "docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASS}"
+                     "docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASS}"
 
                     // Building Docker image from Dockerfile in the repository
                     echo "Building Docker image: ${DOCKER_IMAGE}"
-                    docker.build("${DOCKER_IMAGE}:${BUILD_TIMESTAMP}")
+                    docker.build("${DOCKER_IMAGE}:latest")
                 }
             }
         }
@@ -30,7 +30,7 @@ pipeline {
                 script {
                     // Pushing the Docker image to DockerHub
                     echo "Pushing Docker image: ${DOCKER_IMAGE} to DockerHub"
-                    sh "docker push ${DOCKER_IMAGE}:${BUILD_TIMESTAMP}"
+                    bat "docker push ${DOCKER_IMAGE}:latest"
                 }
             }
         }
@@ -39,7 +39,7 @@ pipeline {
             steps {
                 script {
                     // Kubernetes deployment (requires kubectl to be set up on Jenkins)
-                    sh "kubectl set image deployment/my-app-deployment my-app=${DOCKER_IMAGE}:${BUILD_TIMESTAMP} --record"
+                    bat "kubectl set image deployment/my-app-deployment my-app=${DOCKER_IMAGE}:latest --record"
                 }
             }
         }
