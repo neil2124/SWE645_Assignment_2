@@ -21,16 +21,32 @@ pipeline {
                 }
             }
         }
+        // stage('Push Docker Image') {
+        //     steps {
+        //         script {
+        //             echo "Pushing Docker image: ${DOCKER_IMAGE} to DockerHub"
+        //             docker.withRegistry('https://index.docker.io/v1/', credentials('dockerhub-credentials')) {
+        //                 docker.image("${DOCKER_IMAGE}").push()
+        //             }
+        //         }
+        //     }
+        // }
         stage('Push Docker Image') {
             steps {
                 script {
                     echo "Pushing Docker image: ${DOCKER_IMAGE} to DockerHub"
-                    docker.withRegistry('https://index.docker.io/v1/', credentials('dockerhub-credentials')) {
-                        docker.image("${DOCKER_IMAGE}").push()
-                    }
+                    
+                    // Manually login to Docker Hub
+                    sh '''
+                        echo Dark_Angel@2124 | docker login -u neil2124 --password-stdin
+                    '''
+                    
+                    // Push the image
+                    sh "docker push ${DOCKER_IMAGE}"
                 }
             }
         }
+
         stage('Deploy to Kubernetes') {
             steps {
                 script {
