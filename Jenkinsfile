@@ -39,7 +39,9 @@ pipeline {
             steps {
                 script {
                     // Kubernetes deployment (requires kubectl to be set up on Jenkins)
-                    bat "kubectl set image deployment/my-app-deployment my-app=${DOCKER_IMAGE}:latest --record"
+                    withEnv(["KUBECONFIG=${KUBECONFIG_PATH}"]){
+                        bat "kubectl set image deployment/my-app-deployment my-app=${DOCKER_IMAGE}:latest --record"
+                    }
                 }
             }
         }
