@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     // Logging into DockerHub
-                    sh "docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASS}"
+                    bat "docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASS}"
 
                     // Building Docker image from Dockerfile in the repository
                     echo "Building Docker image: ${DOCKER_IMAGE}"
