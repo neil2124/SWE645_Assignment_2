@@ -4,7 +4,7 @@ pipeline {
         DOCKERHUB_USER = 'neil2124'
         DOCKERHUB_PASS = 'Dark_Angel@2124' // Alternatively, use Jenkins credentials.
         DOCKER_IMAGE = 'neil2124/class-website'
-        KUBECONFIG_PATH = "C:/Users/<your-username>/.kube/config" // Path to your kubeconfig file
+        KUBECONFIG_PATH = "C:\Users\neilm\.kube\config" // Path to your kubeconfig file
     }
     stages {
         stage("Clone Repository") {
@@ -41,7 +41,7 @@ pipeline {
                 script {
                     // Kubernetes deployment (requires kubectl to be set up on Jenkins)
                     withEnv(["KUBECONFIG=${KUBECONFIG_PATH}"]){
-                        bat "kubectl set image deployment/my-app-deployment my-app=${DOCKER_IMAGE}:latest --record"
+                        bat "kubectl set image my-app-deployment my-app=${DOCKER_IMAGE}:latest --record"
                     }
                 }
             }
