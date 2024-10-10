@@ -38,7 +38,7 @@ pipeline {
                     
                     // Manually login to Docker Hub
                     sh '''
-                        echo Dark_Angel@2124 | docker login -u neil2124 --password-stdin
+                        echo "Dark_Angel@2124" | docker login -u "neil2124" --password-stdin
                     '''
                     
                     // Push the image
