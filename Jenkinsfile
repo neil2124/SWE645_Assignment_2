@@ -43,7 +43,7 @@ pipeline {
                     // Kubernetes deployment (requires kubectl to be set up on Jenkins)
                      withEnv(["KUBECONFIG=${KUBECONFIG_PATH}", 
                              "AWS_SHARED_CREDENTIALS_FILE=${AWS_SHARED_CREDENTIALS_FILE}"]){
-                        bat "kubectl set image my-app-deployment my-app=${DOCKER_IMAGE}:latest --record"
+                        bat "kubectl set image deployment/my-app-deployment my-app=neil2124/class-website:latest --record"
                     }
                 }
             }
